@@ -108,6 +108,11 @@ func (b *ZeroBot) handlerMsg(msg string) {
 	case "ping":
 		b.sendMsg("pong")
 
+	case "build":
+		b.handleBuild()
+
+	case "restart":
+
 	case "default":
 		b.sendMsg("default channelID: %s", b.defaultChannel.ID)
 
@@ -119,6 +124,11 @@ func (b *ZeroBot) handlerMsg(msg string) {
 
 func (b *ZeroBot) sendMsg(text string, a ...interface{}) {
 	b.send(fmt.Sprintf(text, a...), b.defaultChannel.ID)
+}
+
+func (b *ZeroBot) sendErr(err error) {
+	Logger.Println("err: ", err.Error())
+	b.send(err.Error(), b.defaultChannel.ID)
 }
 
 func (b *ZeroBot) send(text, channelID string) {
