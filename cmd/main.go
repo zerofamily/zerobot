@@ -23,11 +23,9 @@ func main() {
 		return
 	}
 
-	if *debug {
-		logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
-		zerobot.Logger = logger
-		slack.SetLogger(logger)
-	}
+	logger := log.New(os.Stdout, "slack-bot: ", log.Lshortfile|log.LstdFlags)
+	zerobot.Logger = logger
+	slack.SetLogger(logger)
 
 	bot := zerobot.NewZeroBot(token, *debug)
 	bot.Run()
