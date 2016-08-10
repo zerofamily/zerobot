@@ -18,3 +18,6 @@ redirect_stderr=false
 stdout_logfile=/var/log/zerobot/info.log
 stderr_logfile=/var/log/zerobot/error.log
 ```
+
+![](./artworks/bot.png)
+
