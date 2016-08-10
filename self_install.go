@@ -28,8 +28,12 @@ func (b *ZeroBot) handleBuild() {
 	}
 
 	md5After := md5sum(bin)
-
-	b.sendMsg("md5 before: %s\nmd5 after: %s\nbuilt success", md5Before, md5After)
+	b.sendMsg("md5 before: %s\nmd5 after: %s", md5Before, md5After)
+	if md5Before != md5After {
+		b.sendMsg("built success")
+	} else {
+		b.sendMsg("nothing change")
+	}
 }
 
 func (b *ZeroBot) runCmd(cmd string, args ...string) error {
