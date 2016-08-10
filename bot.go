@@ -47,8 +47,14 @@ func (b *ZeroBot) initDefaultChannel() {
 	b.defaultChannel = channels[0]
 }
 
+func (b *ZeroBot) Close() {
+	// nothing to do now.
+}
+
 func (b *ZeroBot) Run() {
 	go b.rtm.ManageConnection()
+
+	b.sendMsg("zerobot starting ...")
 
 Loop:
 	for {
@@ -69,7 +75,7 @@ Loop:
 				//
 
 			case *slack.LatencyReport:
-				Logger.Printf("Current latency: %+v\n", ev.Value)
+				// Logger.Printf("Current latency: %+v\n", ev.Value)
 
 			case *slack.RTMError:
 				b.sendMsg(ev.Error(), b.defaultChannel.ID)
@@ -112,6 +118,7 @@ func (b *ZeroBot) handlerMsg(msg string) {
 		b.handleBuild()
 
 	case "restart":
+		b.handleRestart()
 
 	case "default":
 		b.sendMsg("default channelID: %s", b.defaultChannel.ID)

@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 )
 
 const (
@@ -41,8 +42,14 @@ func (b *ZeroBot) runCmd(cmd string, args ...string) error {
 	return nil
 }
 
+// send quit signal, and then supervisord let it restart automatically.
 func (b *ZeroBot) handleRestart() {
+	b.sendMsg("killing process ...")
+	if err := syscall.Kill(syscall.Getpid(), syscall.SIGHUP); err != nil {
+		b.sendErr(err)
+	}
 
+	b.sendMsg("process killed")
 }
 
 func md5sum(file string) string {

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	"github.com/holys/zerobot"
 	"github.com/nlopes/slack"
@@ -28,7 +30,19 @@ func main() {
 	slack.SetLogger(logger)
 
 	bot := zerobot.NewZeroBot(token, *debug)
-	bot.Run()
 
-	// TODO: handle Signal
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc,
+		syscall.SIGHUP,
+		syscall.SIGINT,
+		syscall.SIGTERM,
+		syscall.SIGQUIT)
+	go func() {
+		sig := <-sc
+		logger.Printf("signal called, [%d] to exit\n", sig)
+		bot.Close()
+		os.Exit(0)
+	}()
+
+	bot.Run()
 }
