@@ -21,10 +21,10 @@ func (b *ZeroBot) handleBuild() {
 	md5Before := md5sum(bin)
 
 	if err := b.runCmd("git", "pull", "-r"); err != nil {
-		b.sendErr(err)
+		b.sendMsg("git pull err: %s", err.Error())
 	}
 	if err := b.runCmd("make", "build"); err != nil {
-		b.sendErr(err)
+		b.sendMsg("make build err: %s", err.Error())
 	}
 
 	md5After := md5sum(bin)
