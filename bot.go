@@ -106,11 +106,12 @@ func (b *ZeroBot) handlerMsg(msg string) {
 			b.sendMsg(marshal(team))
 		}
 
-	// case "user":
-	// 	users, err := b.client.GetUsers()
-	// 	if err == nil {
-	// 		b.sendMsg(marshal(users))
-	// 	}
+	case "user":
+		users, err := b.client.GetUsers()
+		if err == nil {
+			b.sendMsg(marshal(users))
+		}
+
 	case "ping":
 		b.sendMsg("pong")
 
