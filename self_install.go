@@ -34,7 +34,8 @@ func (b *ZeroBot) handleBuild() {
 
 func (b *ZeroBot) runCmd(cmd string, args ...string) error {
 	c := exec.Command(cmd, args...)
-
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
 	err := c.Run()
 	if err != nil {
 		return err
