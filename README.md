@@ -1,4 +1,5 @@
 # zerobot
 A slack bot made for fun
 
-xx
+
+Deploy with supervisord
