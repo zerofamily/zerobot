@@ -42,15 +42,16 @@ func (b *ZeroBot) runCmdX(cmd string, args ...string) {
 }
 
 var allowCmds = map[string]struct{}{
-	"top":  struct{}{},
-	"ps":   struct{}{},
-	"free": struct{}{},
-	"df":   struct{}{},
-	"htop": struct{}{},
-	"ls":   struct{}{},
-	"cat":  struct{}{},
-	"du":   struct{}{},
-	"env":  struct{}{},
+	"top":   struct{}{},
+	"ps":    struct{}{},
+	"free":  struct{}{},
+	"df":    struct{}{},
+	"htop":  struct{}{},
+	"ls":    struct{}{},
+	"cat":   struct{}{},
+	"du":    struct{}{},
+	"env":   struct{}{},
+	"which": struct{}{},
 }
 
 func isAllowCmds(cmd string) bool {

@@ -74,7 +74,6 @@ Loop:
 				Logger.Println("Connection counter:", ev.ConnectionCount)
 
 			case *slack.MessageEvent:
-				Logger.Println("msg: ", ev.Msg.Text)
 				b.handleMsg(ev.Msg.Text)
 
 			case *slack.PresenceChangeEvent:
@@ -100,15 +99,26 @@ Loop:
 
 func (b *ZeroBot) handleMsg(msg string) {
 	msg = strings.TrimSpace(msg)
-	if strings.Count(msg, space) == 1 {
+
+	sp := strings.Split(msg, space)
+
+	if len(sp) == 1 {
 		b.handleSingle(msg)
 		return
 	}
 
-	sp := strings.Split(msg, space)
-	switch sp[0] {
+	// trim space in the middle
+	args := make([]string, 0, len(sp))
+	for _, s := range sp {
+		if s == "" {
+			continue
+		}
+		args = append(args, s)
+	}
+
+	switch args[0] {
 	case "$":
-		b.handleSystemCmd(sp[1], sp[2:]...)
+		b.handleSystemCmd(args[1], args[2:]...)
 
 	default:
 
