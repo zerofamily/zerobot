@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"syscall"
 )
@@ -34,17 +33,6 @@ func (b *ZeroBot) handleBuild() {
 	} else {
 		b.sendMsg("nothing change")
 	}
-}
-
-func (b *ZeroBot) runCmd(cmd string, args ...string) error {
-	c := exec.Command(cmd, args...)
-	c.Stdout = os.Stdout
-	c.Stderr = os.Stderr
-	err := c.Run()
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // send quit signal, and then supervisord let it restart automatically.

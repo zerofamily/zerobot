@@ -3,8 +3,13 @@ package zerobot
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/nlopes/slack"
+)
+
+const (
+	space = " "
 )
 
 type ZeroBot struct {
@@ -69,7 +74,8 @@ Loop:
 				Logger.Println("Connection counter:", ev.ConnectionCount)
 
 			case *slack.MessageEvent:
-				b.handlerMsg(ev.Msg.Text)
+				Logger.Println("msg: ", ev.Msg.Text)
+				b.handleMsg(ev.Msg.Text)
 
 			case *slack.PresenceChangeEvent:
 				//
@@ -92,8 +98,26 @@ Loop:
 	}
 }
 
-func (b *ZeroBot) handlerMsg(msg string) {
-	switch msg {
+func (b *ZeroBot) handleMsg(msg string) {
+	msg = strings.TrimSpace(msg)
+	if strings.Count(msg, space) == 1 {
+		b.handleSingle(msg)
+		return
+	}
+
+	sp := strings.Split(msg, space)
+	switch sp[0] {
+	case "$":
+		b.handleSystemCmd(sp[1], sp[2:]...)
+
+	default:
+
+	}
+
+}
+
+func (b *ZeroBot) handleSingle(cmd string) {
+	switch cmd {
 	case "channel":
 		channels, err := b.client.GetChannels(true)
 		if err == nil {
@@ -127,7 +151,6 @@ func (b *ZeroBot) handlerMsg(msg string) {
 	default:
 		// b.sendMsg("unknown command: %s", msg)
 	}
-
 }
 
 func (b *ZeroBot) sendMsg(text string, a ...interface{}) {
