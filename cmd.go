@@ -38,7 +38,7 @@ func (b *ZeroBot) runCmdX(cmd string, args ...string) {
 		return
 	}
 
-	b.sendMsg(buf.String())
+	b.send(buf.String(), b.defaultChannel.ID)
 }
 
 var allowCmds = map[string]struct{}{
